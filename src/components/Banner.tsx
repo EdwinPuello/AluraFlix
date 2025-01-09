@@ -3,7 +3,7 @@ import { Box, Typography, Card, Dialog } from '@mui/material';
 import bannerImg from '../assets/img/banner.png';
 import imageCard from '../assets/img/player.png';
 import YouTubePlayer from './YoutubePlayer';
-
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 const Banner: React.FC = () => {
     const [open, setOpen] = useState(false); // Estado para abrir/cerrar el popup
     const [videoUrl, setVideoUrl] = useState(''); // URL del video
@@ -101,6 +101,23 @@ const Banner: React.FC = () => {
                         objectFit: 'cover',
                     }}
                 />
+                        <Box
+                    onClick={() => handleCardClick()}
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        color: '#fff',
+                        opacity: 0.8,
+                        '&:hover': {
+                        opacity: 1,
+                        },
+                        cursor: 'pointer',
+                    }}
+                    >
+                    <PlayCircleOutlineIcon sx={{ fontSize: 60 }} />
+                    </Box>
             </Card>
             {/* Popup para reproducir el video */}
             <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
