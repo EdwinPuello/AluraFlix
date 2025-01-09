@@ -1,50 +1,25 @@
-# React + TypeScript + Vite
+# AluraFlix
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Descripción del Proyecto
+AluraFlix es una aplicación web desarrollada en React que permite gestionar videos de plataformas como YouTube,. Facebook y Vimeo entre otras plataformas. Los usuarios pueden listar, agregar, editar y eliminar videos junto con su título, descripción e imagen. El proyecto utiliza Redux para manejar el estado global de la aplicación, proporcionando una experiencia fluida y escalable
 
-Currently, two official plugins are available:
+### Funcionalidades
+- **Listado de Videos**: Visualiza todos los videos registrados con su título, descripción e imagen de vista previa.
+- **Agregar Videos**:  Agrega nuevos videos mediante un formulario con campos para título, descripción, categoria, enlace de video e imagen.
+- **Editar Videos**:  Actualiza la información de un video existente de manera rápida y sencilla.
+- **Interacción Dinámica**: React asegura una manipulación eficiente del DOM, proporcionando una experiencia rápida y reactiva.
+- **Gestor de Estado con Redux**: Permite manejar el estado global de manera centralizada y eficiente.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Demostración
+Puedes ver la demostración de la aplicación [aquí]().
 
-## Expanding the ESLint configuration
+### Tecnologías Utilizadas
+- **React**: Base para construir la interfaz de usuario.
+- **Redux**: Gestor de estado global para manejar los datos de la aplicación.
+- **HTML**: Estructura del contenido.
+- **CSS**: Diseño y estilos de la interfaz de usuario.
+- **JavaScript/TypeScript**: Lógica de la aplicación y componentes.
+- **Fetch API**: Realiza solicitudes HTTP para gestionar datos en formato JSON.
+- **Material-UI**: Biblioteca de componentes para una interfaz de usuario moderna y responsiva.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Con **AluraFlix**, la gestión de videos nunca ha sido tan sencilla y eficiente. ¡Es el proyecto ideal para explorar las capacidades de React y Redux!
