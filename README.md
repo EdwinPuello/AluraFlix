@@ -11,7 +11,7 @@ AluraFlix es una aplicación web desarrollada en React que permite gestionar vid
 - **Gestor de Estado con Redux**: Permite manejar el estado global de manera centralizada y eficiente.
 
 ### Demostración
-Puedes ver la demostración de la aplicación [aquí]().
+Puedes ver la demostración de la aplicación [aquí](https://edwinpuello.github.io/AluraFlix/).
 
 ### Tecnologías Utilizadas
 - **React**: Base para construir la interfaz de usuario.
