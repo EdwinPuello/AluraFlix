@@ -32,9 +32,9 @@ const Home: React.FC<HomeProps> = ({ videos, onEdit, onDelete }) => {
           <Typography sx={{marginTop:'15px'}} variant="h5" gutterBottom>
             {category}
           </Typography>
-          <Grid2 container spacing={2}>
+          <Grid2 container>
             {categoryVideos.map((video) => (
-              <Grid2 size={{xs:12,sm:6,md:4}} key={video.id}>
+              <Grid2 size={{xs:12,sm:6,md:3}} key={video.id}>
                 <CardVideo video={video} onEdit={onEdit} onDelete={onDelete} />
               </Grid2>
             ))}

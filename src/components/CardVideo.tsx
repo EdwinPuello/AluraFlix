@@ -6,6 +6,7 @@ import {
   Typography,
   Button,
   Box,
+  Tooltip,
 } from '@mui/material';
 
 interface CardVideoProps {
@@ -29,7 +30,7 @@ const CardVideo: React.FC<CardVideoProps> = ({ video, onEdit, onDelete }) => {
         position: 'relative',
         borderRadius: '10px',
         overflow: 'hidden',
-        boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+        boxShadow: '0px 0px 26px rgb(10 34 121)',
       }}
     >
       {/* Encabezado con imagen */}
@@ -60,12 +61,26 @@ const CardVideo: React.FC<CardVideoProps> = ({ video, onEdit, onDelete }) => {
 
       {/* Contenido de la tarjeta */}
       <CardContent>
+        <Tooltip title={
+           <Typography variant="body2" sx={{ fontSize: '13px', color: 'white' }}>
+           {video.title}
+         </Typography>
+        } arrow>
         <Typography variant="h6" gutterBottom>
-          {video.title}
+          {video.title.slice(0, 30)}
+          {video.title.length > 30 ? '...' : ''}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {video.description}
-        </Typography>
+      </Tooltip>
+        <Tooltip title={
+          <Typography variant="body2" sx={{ fontSize: '13px', color: 'white' }}>
+            {video.description}
+          </Typography>
+        } arrow>
+          <Typography variant="body2" color="text.secondary">
+            {video.description.slice(0, 80)}
+            {video.description.length > 80 ? '...' : ''}
+          </Typography>
+        </Tooltip>
       </CardContent>
 
       {/* Acciones (botones) */}
@@ -79,9 +94,9 @@ const CardVideo: React.FC<CardVideoProps> = ({ video, onEdit, onDelete }) => {
         <Button
           size="small"
           sx={{
-            color: '#4CAF50',
+            color: 'rgb(4, 12, 42)',
             fontWeight: 'bold',
-            '&:hover': { backgroundColor: 'rgba(76, 175, 80, 0.1)' },
+            '&:hover': { backgroundColor: 'rgb(4 12 42 / 30%)' },
           }}
           onClick={() => onEdit(video)}
         >
@@ -92,7 +107,7 @@ const CardVideo: React.FC<CardVideoProps> = ({ video, onEdit, onDelete }) => {
           sx={{
             color: '#F44336',
             fontWeight: 'bold',
-            '&:hover': { backgroundColor: 'rgba(244, 67, 54, 0.1)' },
+            '&:hover': { backgroundColor: 'rgb(244 67 54 / 30%)' },
           }}
           onClick={() => onDelete(video.id!)}
         >
