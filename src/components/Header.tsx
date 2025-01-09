@@ -9,9 +9,9 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onOpenNewVideo }) => {
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" style={{ backgroundColor: '#040C2A' }}>
+      <AppBar position="static" style={{ backgroundColor: '#040C2A'}}>
         <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" sx={{ flexGrow: 1, fontSize: 30 }}>
             AluraFlix
           </Typography>
           <Button color="inherit" component={Link} to="/">
