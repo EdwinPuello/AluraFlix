@@ -27,12 +27,9 @@ const Home: React.FC<HomeProps> = ({ videos, onEdit, onDelete }) => {
   return (
     <Box>
       <Banner />
-      <Typography variant="h4" align="center" gutterBottom>
-        Lista de Videos
-      </Typography>
       {Object.entries(groupedVideos).map(([category, categoryVideos]) => (
-        <Box key={category} mb={4}>
-          <Typography variant="h5" gutterBottom>
+        <Box key={category} mb={4} sx={{padding: '0 40px'}}>
+          <Typography sx={{marginTop:'15px'}} variant="h5" gutterBottom>
             {category}
           </Typography>
           <Grid2 container spacing={2}>
@@ -49,6 +46,3 @@ const Home: React.FC<HomeProps> = ({ videos, onEdit, onDelete }) => {
 };
 
 export default Home;
-
-
-{/*  */}

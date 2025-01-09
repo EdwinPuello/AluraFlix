@@ -1,10 +1,10 @@
 const videos = [
     {
       id: 1,
-      title: 'Introducción a React',
+      title: 'Cuándo usar let, var y const?',
       category: 'Frontend',
-      imageUrl: 'https://via.placeholder.com/150',
-      videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      imageUrl: 'https://raw.githubusercontent.com/EdwinPuello/AluraFlix/refs/heads/master/src/assets/img/image%207.png',
+      videoUrl: 'https://www.youtube.com/watch?v=PztCEdIJITY&ab_channel=AluraLatam',
       description: 'Aprende los conceptos básicos de React en este curso introductorio.',
     },
     {
