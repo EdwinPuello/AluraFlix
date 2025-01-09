@@ -29,28 +29,54 @@ const NuevoVideo: React.FC<NuevoVideoProps> = ({ videoToEdit, onSave, open, onCl
     description: '',
   });
 
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
   useEffect(() => {
-    if (videoToEdit) {
-      setVideoData(videoToEdit);
-    } else {
-      setVideoData({
-        id: undefined,
-        title: '',
-        category: '',
-        imageUrl: '',
-        videoUrl: '',
-        description: '',
-      });
+    if (open) {
+      if (videoToEdit) {
+        setVideoData(videoToEdit);
+      } else {
+        setVideoData({
+          id: undefined,
+          title: '',
+          category: '',
+          imageUrl: '',
+          videoUrl: '',
+          description: '',
+        });
+      }
+      setErrors({}); // Reinicia los errores al abrir el modal
     }
-  }, [videoToEdit]);
+  }, [open, videoToEdit]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setVideoData((prev:any) => ({ ...prev, [name]: value }));
+    setVideoData((prev: any) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: '' })); // Limpia el error si el usuario comienza a escribir
+  };
+
+  const handleSelectChange = (e: any) => {
+    const { value } = e.target;
+    setVideoData((prev: any) => ({ ...prev, category: value as string }));
+    setErrors((prev) => ({ ...prev, category: '' })); // Limpia el error
+  };
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+    if (!videoData.title) newErrors.title = 'El título es requerido.';
+    if (!videoData.category) newErrors.category = 'La categoría es requerida.';
+    if (!videoData.imageUrl) newErrors.imageUrl = 'El enlace de la imagen es requerido.';
+    if (!videoData.videoUrl) newErrors.videoUrl = 'El enlace del video es requerido.';
+    if (!videoData.description) newErrors.description = 'La descripción es requerida.';
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Devuelve true si no hay errores
   };
 
   const handleSubmit = () => {
-    onSave(videoData);
+    if (validate()) {
+      onSave(videoData);
+      onClose(); // Cierra el modal después de guardar
+    }
   };
 
   return (
@@ -78,15 +104,15 @@ const NuevoVideo: React.FC<NuevoVideoProps> = ({ videoToEdit, onSave, open, onCl
             onChange={handleInputChange}
             fullWidth
             required
+            error={!!errors.title}
+            helperText={errors.title}
           />
-          <FormControl fullWidth>
+          <FormControl fullWidth error={!!errors.category}>
             <InputLabel>Categoría</InputLabel>
             <Select
               name="category"
               value={videoData.category}
-              onChange={(e) =>
-                setVideoData((prev:any) => ({ ...prev, category: e.target.value }))
-              }
+              onChange={handleSelectChange}
               label="Categoría"
             >
               {['Frontend', 'Backend', 'Innovación', 'Gestión'].map((category) => (
@@ -95,6 +121,11 @@ const NuevoVideo: React.FC<NuevoVideoProps> = ({ videoToEdit, onSave, open, onCl
                 </MenuItem>
               ))}
             </Select>
+            {errors.category && (
+              <Typography variant="caption" color="error">
+                {errors.category}
+              </Typography>
+            )}
           </FormControl>
           <TextField
             label="Enlace de la Imagen"
@@ -103,6 +134,8 @@ const NuevoVideo: React.FC<NuevoVideoProps> = ({ videoToEdit, onSave, open, onCl
             onChange={handleInputChange}
             fullWidth
             required
+            error={!!errors.imageUrl}
+            helperText={errors.imageUrl}
           />
           <TextField
             label="Enlace del Video"
@@ -111,6 +144,8 @@ const NuevoVideo: React.FC<NuevoVideoProps> = ({ videoToEdit, onSave, open, onCl
             onChange={handleInputChange}
             fullWidth
             required
+            error={!!errors.videoUrl}
+            helperText={errors.videoUrl}
           />
           <TextField
             label="Descripción"
@@ -120,12 +155,21 @@ const NuevoVideo: React.FC<NuevoVideoProps> = ({ videoToEdit, onSave, open, onCl
             fullWidth
             multiline
             rows={4}
+            error={!!errors.description}
+            helperText={errors.description}
           />
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Button variant="contained" color="primary" onClick={handleSubmit}>
               Guardar
             </Button>
-            <Button variant="outlined" color="secondary" onClick={onClose}>
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={() => {
+                setErrors({}); // Limpia los errores al cerrar
+                onClose();
+              }}
+            >
               Cancelar
             </Button>
           </Box>

@@ -5,6 +5,7 @@ import Home from './components/Home';
 import NuevoVideo from './components/NuevoVideos';
 import './index.css'
 import videosData from './data/videoData';
+import Footer from './components/Footer';
 
 export interface VideoData {
   id?: number;
@@ -26,7 +27,7 @@ const App: React.FC = () => {
  useEffect(() => {
   const storedVideos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
   if (storedVideos.length > 0) {
-    setVideos(videosData);
+    setVideos(storedVideos);
   } else {
     setVideos(videosData); // Cargar los videos desde el archivo estático
   }
@@ -87,6 +88,7 @@ const App: React.FC = () => {
           open={isNuevoVideoOpen}
           onClose={closeNuevoVideo}
         />
+        <Footer />
       </Router>
   );
 };
