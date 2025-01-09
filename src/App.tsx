@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Home from './components/Home';
 import NuevoVideo from './components/NuevoVideos';
+import './index.css'
+import videosData from './data/videoData';
 
 export interface VideoData {
   id?: number;
@@ -20,13 +22,16 @@ const App: React.FC = () => {
   const [videoToEdit, setVideoToEdit] = useState<VideoData | null>(null);
   const [isNuevoVideoOpen, setIsNuevoVideoOpen] = useState(false);
 
-  // Cargar los videos desde Local Storage al iniciar la aplicación
-  useEffect(() => {
-    const storedVideos = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (storedVideos) {
-      setVideos(JSON.parse(storedVideos));
-    }
-  }, []);
+ // Cargar los videos desde Local Storage o datos estáticos
+ useEffect(() => {
+  const storedVideos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+  if (storedVideos.length > 0) {
+    setVideos(videosData);
+  } else {
+    setVideos(videosData); // Cargar los videos desde el archivo estático
+  }
+}, []);
+
 
   // Guardar los videos en Local Storage cada vez que cambien
   useEffect(() => {

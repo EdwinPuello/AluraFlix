@@ -8,6 +8,14 @@ const videos = [
       description: 'Aprende los conceptos básicos de React en este curso introductorio.',
     },
     {
+      id: 12,
+      title: 'Introducción a Reactasd',
+      category: 'Frontend',
+      imageUrl: 'https://via.plaasdceholder.com/150',
+      videoUrl: 'https://www.youtubasde.com/watch?v=dQw4w9WgXcQ',
+      description: 'Aprende los conceasdasdptos básicos de React en este curso introductorio.',
+    },
+    {
       id: 2,
       title: 'Node.js para Principiantes',
       category: 'Backend',
