@@ -9,6 +9,8 @@ import {
   InputLabel,
   FormControl,
   Modal,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import { VideoData } from '../App';
 
@@ -30,6 +32,7 @@ const NuevoVideo: React.FC<NuevoVideoProps> = ({ videoToEdit, onSave, open, onCl
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [snackbarOpen, setSnackbarOpen] = useState(false); // Estado para el Snackbar
 
   useEffect(() => {
     if (open) {
@@ -45,20 +48,20 @@ const NuevoVideo: React.FC<NuevoVideoProps> = ({ videoToEdit, onSave, open, onCl
           description: '',
         });
       }
-      setErrors({}); // Reinicia los errores al abrir el modal
+      setErrors({});
     }
   }, [open, videoToEdit]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setVideoData((prev: any) => ({ ...prev, [name]: value }));
-    setErrors((prev) => ({ ...prev, [name]: '' })); // Limpia el error si el usuario comienza a escribir
+    setErrors((prev) => ({ ...prev, [name]: '' }));
   };
 
   const handleSelectChange = (e: any) => {
     const { value } = e.target;
     setVideoData((prev: any) => ({ ...prev, category: value as string }));
-    setErrors((prev) => ({ ...prev, category: '' })); // Limpia el error
+    setErrors((prev) => ({ ...prev, category: '' }));
   };
 
   const validate = () => {
@@ -69,113 +72,130 @@ const NuevoVideo: React.FC<NuevoVideoProps> = ({ videoToEdit, onSave, open, onCl
     if (!videoData.videoUrl) newErrors.videoUrl = 'El enlace del video es requerido.';
     if (!videoData.description) newErrors.description = 'La descripción es requerida.';
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Devuelve true si no hay errores
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = () => {
     if (validate()) {
       onSave(videoData);
-      onClose(); // Cierra el modal después de guardar
+      setSnackbarOpen(true); // Abre el Snackbar al guardar
+      onClose();
     }
   };
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
   return (
-    <Modal open={open} onClose={onClose}>
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: { xs: 300, sm: 400 },
-          bgcolor: 'background.paper',
-          boxShadow: 24,
-          p: 4,
-        }}
-      >
-        <Typography variant="h4" align="center" gutterBottom>
-          {videoToEdit ? 'Editar Video' : 'Nuevo Video'}
-        </Typography>
-        <Box component="form" autoComplete="off" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <TextField
-            label="Título"
-            name="title"
-            value={videoData.title}
-            onChange={handleInputChange}
-            fullWidth
-            required
-            error={!!errors.title}
-            helperText={errors.title}
-          />
-          <FormControl fullWidth error={!!errors.category}>
-            <InputLabel>Categoría</InputLabel>
-            <Select
-              name="category"
-              value={videoData.category}
-              onChange={handleSelectChange}
-              label="Categoría"
-            >
-              {['Frontend', 'Backend', 'Innovación', 'Gestión'].map((category) => (
-                <MenuItem key={category} value={category}>
-                  {category}
-                </MenuItem>
-              ))}
-            </Select>
-            {errors.category && (
-              <Typography variant="caption" color="error">
-                {errors.category}
-              </Typography>
-            )}
-          </FormControl>
-          <TextField
-            label="Enlace de la Imagen"
-            name="imageUrl"
-            value={videoData.imageUrl}
-            onChange={handleInputChange}
-            fullWidth
-            required
-            error={!!errors.imageUrl}
-            helperText={errors.imageUrl}
-          />
-          <TextField
-            label="Enlace del Video"
-            name="videoUrl"
-            value={videoData.videoUrl}
-            onChange={handleInputChange}
-            fullWidth
-            required
-            error={!!errors.videoUrl}
-            helperText={errors.videoUrl}
-          />
-          <TextField
-            label="Descripción"
-            name="description"
-            value={videoData.description}
-            onChange={handleInputChange}
-            fullWidth
-            multiline
-            rows={4}
-            error={!!errors.description}
-            helperText={errors.description}
-          />
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Button variant="contained" color="primary" onClick={handleSubmit}>
-              Guardar
-            </Button>
-            <Button
-              variant="outlined"
-              color="secondary"
-              onClick={() => {
-                setErrors({}); // Limpia los errores al cerrar
-                onClose();
-              }}
-            >
-              Cancelar
-            </Button>
+    <>
+      <Modal open={open} onClose={onClose}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: { xs: 300, sm: 400 },
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography variant="h4" align="center" gutterBottom>
+            {videoToEdit ? 'Editar Video' : 'Nuevo Video'}
+          </Typography>
+          <Box component="form" autoComplete="off" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <TextField
+              label="Título"
+              name="title"
+              value={videoData.title}
+              onChange={handleInputChange}
+              fullWidth
+              required
+              error={!!errors.title}
+              helperText={errors.title}
+            />
+            <FormControl fullWidth error={!!errors.category}>
+              <InputLabel>Categoría</InputLabel>
+              <Select
+                name="category"
+                value={videoData.category}
+                onChange={handleSelectChange}
+                label="Categoría"
+              >
+                {['Frontend', 'Backend', 'Innovación', 'Gestión'].map((category) => (
+                  <MenuItem key={category} value={category}>
+                    {category}
+                  </MenuItem>
+                ))}
+              </Select>
+              {errors.category && (
+                <Typography variant="caption" color="error">
+                  {errors.category}
+                </Typography>
+              )}
+            </FormControl>
+            <TextField
+              label="Enlace de la Imagen"
+              name="imageUrl"
+              value={videoData.imageUrl}
+              onChange={handleInputChange}
+              fullWidth
+              required
+              error={!!errors.imageUrl}
+              helperText={errors.imageUrl}
+            />
+            <TextField
+              label="Enlace del Video"
+              name="videoUrl"
+              value={videoData.videoUrl}
+              onChange={handleInputChange}
+              fullWidth
+              required
+              error={!!errors.videoUrl}
+              helperText={errors.videoUrl}
+            />
+            <TextField
+              label="Descripción"
+              name="description"
+              value={videoData.description}
+              onChange={handleInputChange}
+              fullWidth
+              multiline
+              rows={4}
+              error={!!errors.description}
+              helperText={errors.description}
+            />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Button variant="contained" color="primary" onClick={handleSubmit}>
+              {videoToEdit ? 'Actualizar' : 'Guardar'}
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => {
+                  setErrors({});
+                  onClose();
+                }}
+              >
+                Cancelar
+              </Button>
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </Modal>
+      </Modal>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000} // Se oculta automáticamente en 3 segundos
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+           Guardado exitosamente.
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

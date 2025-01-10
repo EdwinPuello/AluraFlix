@@ -8,9 +8,13 @@ import {
   Box,
   Tooltip,
   Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from '@mui/material';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import YouTubePlayer from './YoutubePlayer';
+
 interface CardVideoProps {
   video: {
     id?: any;
@@ -25,18 +29,31 @@ interface CardVideoProps {
 }
 
 const CardVideo: React.FC<CardVideoProps> = ({ video, onEdit, onDelete }) => {
-
-  const [open, setOpen] = useState(false); // Estado para abrir/cerrar el popup
+  const [open, setOpen] = useState(false); // Estado para abrir/cerrar el popup del video
   const [videoUrl, setVideoUrl] = useState(''); // URL del video
+  const [confirmOpen, setConfirmOpen] = useState(false); // Estado para el diálogo de confirmación
 
   const handleCardClick = (urlVideo: string) => {
-    setVideoUrl(urlVideo); // Cambia a tu enlace de YouTube
+    setVideoUrl(urlVideo);
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
-    setVideoUrl(''); // Limpia la URL del video
+    setVideoUrl('');
+  };
+
+  const handleConfirmOpen = () => {
+    setConfirmOpen(true); // Abre el diálogo de confirmación
+  };
+
+  const handleConfirmClose = () => {
+    setConfirmOpen(false); // Cierra el diálogo de confirmación
+  };
+
+  const handleDelete = () => {
+    onDelete(video.id!); // Llama a la función onDelete con el ID del video
+    handleConfirmClose(); // Cierra el diálogo
   };
 
   return (
@@ -97,21 +114,13 @@ const CardVideo: React.FC<CardVideoProps> = ({ video, onEdit, onDelete }) => {
         </Box>
         {/* Contenido de la tarjeta */}
         <CardContent>
-          <Tooltip title={
-            <Typography variant="body2" sx={{ fontSize: '13px', color: 'white' }}>
-              {video.title}
-            </Typography>
-          } arrow>
+          <Tooltip title={video.title} arrow>
             <Typography variant="h6" gutterBottom>
               {video.title.slice(0, 30)}
               {video.title.length > 30 ? '...' : ''}
             </Typography>
           </Tooltip>
-          <Tooltip title={
-            <Typography variant="body2" sx={{ fontSize: '13px', color: 'white' }}>
-              {video.description}
-            </Typography>
-          } arrow>
+          <Tooltip title={video.description} arrow>
             <Typography variant="body2" color="text.secondary">
               {video.description.slice(0, 80)}
               {video.description.length > 80 ? '...' : ''}
@@ -145,7 +154,7 @@ const CardVideo: React.FC<CardVideoProps> = ({ video, onEdit, onDelete }) => {
               fontWeight: 'bold',
               '&:hover': { backgroundColor: 'rgb(244 67 54 / 30%)' },
             }}
-            onClick={() => onDelete(video.id!)}
+            onClick={handleConfirmOpen} // Abre el cuadro de confirmación
           >
             Eliminar
           </Button>
@@ -153,6 +162,22 @@ const CardVideo: React.FC<CardVideoProps> = ({ video, onEdit, onDelete }) => {
       </Card>
       <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
         <YouTubePlayer videoUrl={videoUrl} onClose={handleClose} />
+      </Dialog>
+      <Dialog open={confirmOpen} onClose={handleConfirmClose}>
+        <DialogTitle>¿Estás seguro?</DialogTitle>
+        <DialogContent>
+          <Typography>
+            ¿Estás seguro de que deseas eliminar el video "<strong>{video.title}</strong>"?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleConfirmClose} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={handleDelete} color="secondary">
+            Eliminar
+          </Button>
+        </DialogActions>
       </Dialog>
     </>
   );
